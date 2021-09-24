@@ -1,11 +1,20 @@
-import React from 'react';
+import React from "react";
+import GameWrapper from "./GameWrapper";
+import AppRouter from "./Router";
+import { Link } from "@reach/router";
 
-function App() {
+const App = () => {
   return (
     <div>
-      Hello World!
+      <Link to="/">Inicio</Link>
+      <div></div>
+      <Link to="/game">Empieza el juego</Link>
+      <div></div>
+      <Link to="/gameOver">Bomba secreta no tan secreta</Link>
+      <AppRouter />
+      Footer en comun
     </div>
   );
-}
+};
 
 export default App;
