@@ -1,17 +1,10 @@
-import { RouteComponentProps } from "@reach/router";
 import React from "react";
-
-export interface Route {
-  path: string;
-  Component: React.LazyExoticComponent<
-    (props: RouteComponentProps) => JSX.Element
-  >;
-}
+import { Route } from "../../utils/declarations";
 
 export const routes: Route[] = [
   {
     path: "/game",
-    Component: React.lazy(() => import("../GameWrapper")),
+    Component: React.lazy(() => import("../MineSweeper")),
   },
   {
     path: "/gameOver",

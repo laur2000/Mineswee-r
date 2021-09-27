@@ -1,7 +1,8 @@
 import React from "react";
 
-import { RouteComponentProps, Router } from "@reach/router";
-import { Route, routes } from "./routes";
+import { Router } from "@reach/router";
+import { routes } from "./routes";
+import { Route } from "../../utils/declarations";
 
 const AppRouter = () => {
   return (
