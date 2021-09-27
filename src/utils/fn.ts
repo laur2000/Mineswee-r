@@ -1,4 +1,4 @@
-import { Field, Index, Settings, TileState } from "./declarations";
+import { Field, Index, Settings, Tile, TileState } from "./declarations";
 
 export const generateBombField = (settings: Settings): Field => {
   const { width, height, bombs } = settings;
@@ -17,6 +17,26 @@ export const generateBombField = (settings: Settings): Field => {
     }
   }
   return field;
+};
+
+export const handleTileReveal = (field: Field, tile: Tile) => {
+  if (
+    !tile.hasBomb &&
+    tile.neighbourBombs === 0 &&
+    tile.state !== TileState.VISIBLE
+  ) {
+    tile.state = TileState.VISIBLE;
+    const indices = getAllDirectionIndices(
+      tile.index,
+      field.length,
+      field[0].length
+    );
+
+    indices.forEach((index) =>
+      handleTileReveal(field, field[index.i][index.j])
+    );
+  }
+  tile.state = TileState.VISIBLE;
 };
 
 export const addNeighboursBomb = (
@@ -77,6 +97,7 @@ export const generateEmptyField = (width: number, height: number): Field => {
         state: TileState.HIDDEN,
         hasBomb: false,
         neighbourBombs: 0,
+        index: { i: row, j: column },
       };
     }
   }

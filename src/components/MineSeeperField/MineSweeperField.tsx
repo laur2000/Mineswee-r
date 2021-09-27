@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import "./MineSweeperField.css";
-import { generateBombField } from "../../utils/fn";
+import { generateBombField, handleTileReveal } from "../../utils/fn";
 import { Tile, Settings, TileState } from "../../utils/declarations";
 
 import MineSweeperFieldRenderer from "./MineSweeperFieldRenderer";
@@ -20,8 +20,9 @@ const MineSweeperField = (props: PropsWithChildren<Settings>) => {
     <MineSweeperFieldRenderer
       field={field}
       onTileClick={(tile) => {
-        tile.state = TileState.VISIBLE;
+        handleTileReveal(field, tile);
         setField([...field]);
+        console.log(field);
       }}
     />
   );

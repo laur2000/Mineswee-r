@@ -17,6 +17,7 @@ export interface Tile {
   hasBomb: boolean;
   state: TileState;
   neighbourBombs: number;
+  index: Index;
 }
 
 export interface Route {
