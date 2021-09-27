@@ -3,10 +3,11 @@ import React from "react";
 import { Router } from "@reach/router";
 import { routes } from "./routes";
 import { Route } from "../../utils/declarations";
+import Loading from "../../components/Loading";
 
 const AppRouter = () => {
   return (
-    <React.Suspense fallback={<div>Loading</div>}>
+    <React.Suspense fallback={<Loading />}>
       <Router>{routes.map(transformRouteToComponent)}</Router>
     </React.Suspense>
   );

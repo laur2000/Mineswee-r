@@ -32,6 +32,17 @@ export interface Settings {
   bombs: number;
 }
 
+export interface MineSweeperFieldRendererProps {
+  field: Field;
+  settings: Settings;
+  onTileClick: (tile: Tile) => void;
+}
+
+export interface RenderTileProps {
+  tile: Tile;
+  onTileClick: (tile: Tile) => void;
+}
+
 export type Field = Tile[][];
 
 export type SettingsByDifficulty = { [key in Difficulty]: Partial<Settings> };

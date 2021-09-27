@@ -30,6 +30,13 @@ export const generateEmptyField = (width: number, height: number): Field => {
   return field;
 };
 
+export const useTitle = (title?: string) => {
+  if (title) {
+    document.title = title;
+  }
+  return document.title;
+};
+
 function randomNumberInRange(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }

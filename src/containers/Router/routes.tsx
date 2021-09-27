@@ -1,17 +1,28 @@
 import React from "react";
 import { Route } from "../../utils/declarations";
 
+export enum Path {
+  INDEX = "/",
+  SETTINGS = "/settings",
+  GAME = "/game",
+  HIGHSCORE = "/highscore",
+}
+
 export const routes: Route[] = [
   {
-    path: "/game",
-    Component: React.lazy(() => import("../MineSweeper")),
+    path: Path.GAME,
+    Component: React.lazy(() => import("../Game")),
   },
   {
-    path: "/gameOver",
-    Component: React.lazy(() => import("../GameOver")),
+    path: Path.HIGHSCORE,
+    Component: React.lazy(() => import("../Highscore")),
   },
   {
-    path: "/",
-    Component: React.lazy(() => import("../Setup")),
+    path: Path.INDEX,
+    Component: React.lazy(() => import("../Index")),
+  },
+  {
+    path: Path.SETTINGS,
+    Component: React.lazy(() => import("../SettingsView")),
   },
 ];

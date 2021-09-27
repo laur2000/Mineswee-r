@@ -5,7 +5,7 @@ import SettingsContext from "../providers/SettingsProvider";
 import { useForm } from "antd/lib/form/Form";
 import { Difficulty, SettingsByDifficulty } from "../utils/declarations";
 
-const SetupForm = () => {
+const SettingsForm = () => {
   const [settings, setSettings] = useContext(SettingsContext);
   const [form] = useForm();
 
@@ -17,13 +17,7 @@ const SetupForm = () => {
   const handleCustomChange = () => handleDifficultyChange(Difficulty.CUSTOM);
 
   return (
-    <Form
-      form={form}
-      labelCol={{ span: 4 }}
-      wrapperCol={{ span: 2 }}
-      onFinish={setSettings}
-      initialValues={settings}
-    >
+    <Form form={form} onFinish={setSettings} initialValues={settings}>
       <Form.Item label="Difficulty" name="difficulty">
         <Select onChange={handleDifficultyChange}>
           {Object.entries(Difficulty).map(([label, value]) => (
@@ -52,14 +46,14 @@ const SetupForm = () => {
 const settingsByDifficulty: SettingsByDifficulty = {
   [Difficulty.EASY]: {
     difficulty: Difficulty.EASY,
-    width: 10,
-    height: 10,
-    bombs: 20,
+    width: 5,
+    height: 5,
+    bombs: 10,
   },
   [Difficulty.MEDIUM]: {
     difficulty: Difficulty.MEDIUM,
-    width: 20,
-    height: 15,
+    width: 10,
+    height: 10,
     bombs: 40,
   },
   [Difficulty.HARD]: {
@@ -71,4 +65,4 @@ const settingsByDifficulty: SettingsByDifficulty = {
   [Difficulty.CUSTOM]: { difficulty: Difficulty.CUSTOM },
 };
 
-export default SetupForm;
+export default SettingsForm;
