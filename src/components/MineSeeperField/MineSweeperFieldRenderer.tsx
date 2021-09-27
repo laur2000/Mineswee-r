@@ -1,10 +1,8 @@
 import { Button, Col, Row } from "antd";
 import { CSSProperties, PropsWithChildren } from "react";
 import {
-  Field,
   MineSweeperFieldRendererProps,
   RenderTileProps,
-  Tile,
   TileState,
 } from "../../utils/declarations";
 import Container from "../Container";
@@ -20,29 +18,21 @@ const buttonStyle: CSSProperties = {
 const MineSweeperFieldRenderer = (
   props: PropsWithChildren<MineSweeperFieldRendererProps>
 ) => {
-  const {
-    field,
-    onTileClick,
-    settings: { width, height },
-  } = props;
+  const { field, onTileClick } = props;
 
   return (
     <Container>
-      {Array(height)
-        .fill(0)
-        .map((_, i) => (
-          <Row>
-            {Array(width)
-              .fill(0)
-              .map(
-                (_, j) =>
-                  field[i] &&
-                  field[i][j] && (
-                    <RenderTile tile={field[i][j]} onTileClick={onTileClick} />
-                  )
-              )}
-          </Row>
-        ))}
+      {field.map((row, i) => (
+        <Row key={"field-row-" + i}>
+          {row.map((tile, j) => (
+            <RenderTile
+              tile={tile}
+              onTileClick={onTileClick}
+              key={"field-tile-" + i + "-" + j}
+            />
+          ))}
+        </Row>
+      ))}
     </Container>
   );
 };
@@ -62,7 +52,11 @@ export const RenderTile = (props: RenderTileProps) => {
     return (
       <Col>
         <Button style={buttonStyle} disabled>
-          {tile.hasBomb ? "X" : " "}
+          {tile.hasBomb
+            ? "X"
+            : tile.neighbourBombs === 0
+            ? " "
+            : tile.neighbourBombs}
         </Button>
       </Col>
     );

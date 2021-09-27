@@ -19,7 +19,6 @@ const MineSweeperField = (props: PropsWithChildren<Settings>) => {
   return (
     <MineSweeperFieldRenderer
       field={field}
-      settings={props}
       onTileClick={(tile) => {
         tile.state = TileState.VISIBLE;
         setField([...field]);

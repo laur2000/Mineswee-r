@@ -16,6 +16,7 @@ export enum Difficulty {
 export interface Tile {
   hasBomb: boolean;
   state: TileState;
+  neighbourBombs: number;
 }
 
 export interface Route {
@@ -34,7 +35,6 @@ export interface Settings {
 
 export interface MineSweeperFieldRendererProps {
   field: Field;
-  settings: Settings;
   onTileClick: (tile: Tile) => void;
 }
 
@@ -44,5 +44,10 @@ export interface RenderTileProps {
 }
 
 export type Field = Tile[][];
+
+export interface Index {
+  i: number;
+  j: number;
+}
 
 export type SettingsByDifficulty = { [key in Difficulty]: Partial<Settings> };
