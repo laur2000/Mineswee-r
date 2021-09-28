@@ -36,13 +36,13 @@ export interface Settings {
 
 export interface MineSweeperFieldRendererProps {
   field: Field;
-  onTileClick: (tile: Tile) => void;
-  onTileFlagged: (tile: Tile) => void;
+  rerenderField: () => void;
 }
 
 export interface RenderTileProps {
   tile: Tile;
   onTileClick: (tile: Tile) => void;
+  onTileFlagged: (tile: Tile) => void;
 }
 
 export interface MineSweeperScoreProps {

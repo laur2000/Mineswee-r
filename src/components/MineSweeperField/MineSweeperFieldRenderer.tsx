@@ -1,11 +1,14 @@
 import { Button, Col, Row } from "antd";
-import { CSSProperties, PropsWithChildren, useEffect } from "react";
+import { CSSProperties, PropsWithChildren, MouseEvent } from "react";
 import {
   MineSweeperFieldRendererProps,
   RenderTileProps,
+  Tile,
   TileState,
 } from "../../utils/declarations";
 import Container from "../Container";
+import { FlagOutlined } from "@ant-design/icons";
+import { handleTileReveal } from "../../utils/fn";
 
 const buttonStyle: CSSProperties = {
   width: "32px",
@@ -18,26 +21,17 @@ const buttonStyle: CSSProperties = {
 const MineSweeperFieldRenderer = (
   props: PropsWithChildren<MineSweeperFieldRendererProps>
 ) => {
-  const { field, onTileClick, onTileFlagged } = props;
+  const { field, rerenderField } = props;
 
-  useEffect(() => {
-    const handleTileFlagged = (e: MouseEvent) => {
-      e.preventDefault();
-      // @ts-ignore
-      const buttonId: string = e.target.id;
-      const buttonIndex = buttonId && buttonId.match(/tile-button-(\d+)-(\d+)/);
+  const handleTileClick = (tile: Tile) => {
+    handleTileReveal(field, tile);
+    rerenderField();
+  };
 
-      if (buttonIndex) {
-        const i = Number(buttonIndex[1]);
-        const j = Number(buttonIndex[2]);
-        onTileFlagged(field[i][j]);
-      }
-    };
-    document.addEventListener("contextmenu", handleTileFlagged);
-
-    return () => document.removeEventListener("contextmenu", handleTileFlagged);
-  }, [field]);
-
+  const handleTileFlagged = (tile: Tile) => {
+    tile.isFlagged = !tile.isFlagged;
+    rerenderField();
+  };
   return (
     <Container>
       {field.map((row, i) => (
@@ -45,7 +39,8 @@ const MineSweeperFieldRenderer = (
           {row.map((tile, j) => (
             <RenderTile
               tile={tile}
-              onTileClick={onTileClick}
+              onTileClick={handleTileClick}
+              onTileFlagged={handleTileFlagged}
               key={"field-tile-" + i + "-" + j}
             />
           ))}
@@ -56,17 +51,31 @@ const MineSweeperFieldRenderer = (
 };
 
 export const RenderTile = (props: RenderTileProps) => {
-  const { tile, onTileClick } = props;
+  const { tile, onTileClick, onTileFlagged } = props;
+
+  const handleTileMouseDown = (e: MouseEvent) => {
+    e.preventDefault();
+
+    const isLeftClick = e.button === 0;
+    const isRightClick = e.button === 2;
+
+    if (isLeftClick) {
+      onTileClick(tile);
+    }
+    if (isRightClick) {
+      onTileFlagged(tile);
+    }
+  };
 
   if (tile.state === TileState.HIDDEN) {
     return (
       <Col>
         <Button
-          id={"tile-button-" + tile.index.i + "-" + tile.index.j}
           style={buttonStyle}
-          onClick={(e) => onTileClick(tile)}
+          onMouseDown={handleTileMouseDown}
+          onContextMenu={(e) => e.preventDefault()}
         >
-          {tile.isFlagged ? "F" : " "}
+          {tile.isFlagged ? <FlagOutlined /> : " "}
         </Button>
       </Col>
     );

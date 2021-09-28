@@ -22,17 +22,7 @@ const MineSweeperField = (props: PropsWithChildren<Settings>) => {
   return (
     <div>
       <MineSweeperScore field={field} settings={props} onFinish={console.log} />
-      <MineSweeperFieldRenderer
-        field={field}
-        onTileClick={(tile) => {
-          handleTileReveal(field, tile);
-          rerenderField();
-        }}
-        onTileFlagged={(tile) => {
-          tile.isFlagged = !tile.isFlagged;
-          rerenderField();
-        }}
-      />
+      <MineSweeperFieldRenderer field={field} rerenderField={rerenderField} />
     </div>
   );
 };
