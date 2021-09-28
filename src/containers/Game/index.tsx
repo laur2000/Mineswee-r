@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import Container from "../../components/Container";
-import MineSweeperField from "../../components/MineSeeperField/MineSweeperField";
+import MineSweeperField from "../../components/MineSweeperField/MineSweeperField";
 import SettingsContext from "../../providers/SettingsProvider";
 import { Space, Typography } from "antd";
 import { useTitle } from "../../utils/fn";

@@ -3,7 +3,6 @@ import { RouteComponentProps } from "@reach/router";
 export enum TileState {
   VISIBLE = "VISIBLE",
   HIDDEN = "HIDDEN",
-  FLAGGED = "FLAGGED",
 }
 
 export enum Difficulty {
@@ -15,6 +14,7 @@ export enum Difficulty {
 
 export interface Tile {
   hasBomb: boolean;
+  isFlagged: boolean;
   state: TileState;
   neighbourBombs: number;
   index: Index;
@@ -37,11 +37,18 @@ export interface Settings {
 export interface MineSweeperFieldRendererProps {
   field: Field;
   onTileClick: (tile: Tile) => void;
+  onTileFlagged: (tile: Tile) => void;
 }
 
 export interface RenderTileProps {
   tile: Tile;
   onTileClick: (tile: Tile) => void;
+}
+
+export interface MineSweeperScoreProps {
+  field: Field;
+  settings: Settings;
+  onFinish: (time: number, settings: Settings) => void;
 }
 
 export type Field = Tile[][];

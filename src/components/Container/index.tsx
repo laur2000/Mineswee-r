@@ -10,7 +10,7 @@ const cardStyle: CSSProperties = {
 };
 
 const Container = (props: PropsWithChildren<CardProps>) => {
-  return <Card style={cardStyle}>{props.children}</Card>;
+  return <Card style={cardStyle} {...props} />;
 };
 
 export default Container;

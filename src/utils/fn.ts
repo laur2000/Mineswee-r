@@ -20,23 +20,22 @@ export const generateBombField = (settings: Settings): Field => {
 };
 
 export const handleTileReveal = (field: Field, tile: Tile) => {
-  if (
-    !tile.hasBomb &&
-    tile.neighbourBombs === 0 &&
-    tile.state !== TileState.VISIBLE
-  ) {
-    tile.state = TileState.VISIBLE;
+  if (tile.isFlagged) return;
+  tile.state = TileState.VISIBLE;
+
+  if (!tile.hasBomb && tile.neighbourBombs === 0) {
     const indices = getAllDirectionIndices(
       tile.index,
       field.length,
       field[0].length
     );
+    const isHidden = (tile: Tile) => tile.state === TileState.HIDDEN;
 
-    indices.forEach((index) =>
-      handleTileReveal(field, field[index.i][index.j])
-    );
+    indices
+      .map((index) => field[index.i][index.j])
+      .filter((tile) => isHidden(tile))
+      .forEach((tile) => handleTileReveal(field, tile));
   }
-  tile.state = TileState.VISIBLE;
 };
 
 export const addNeighboursBomb = (
@@ -79,6 +78,23 @@ export const getAllDirectionIndices = (
   return indices.filter((ind) => isIndexValid(ind, maxILength, maxJLength));
 };
 
+export const calculateRemainingBombs = (field: Field) => {
+  let tilesWithBombFlagged = 0;
+  let tilesWithoutBombFlagged = 0;
+
+  for (let i = 0; i < field.length; i++) {
+    for (let j = 0; j < field[0].length; j++) {
+      const tile = field[i][j];
+
+      if (tile.isFlagged) {
+        tile.hasBomb ? tilesWithBombFlagged++ : tilesWithoutBombFlagged++;
+      }
+    }
+  }
+
+  return { tilesWithoutBombFlagged, tilesWithBombFlagged };
+};
+
 export const isIndexValid = (
   index: Index,
   maxILength: number,
@@ -98,6 +114,7 @@ export const generateEmptyField = (width: number, height: number): Field => {
         hasBomb: false,
         neighbourBombs: 0,
         index: { i: row, j: column },
+        isFlagged: false,
       };
     }
   }
