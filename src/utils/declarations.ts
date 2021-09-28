@@ -1,10 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
 
-export enum TileState {
-  VISIBLE = "VISIBLE",
-  HIDDEN = "HIDDEN",
-}
-
 export enum Difficulty {
   EASY = "EASY",
   MEDIUM = "MEDIUM",
@@ -13,9 +8,9 @@ export enum Difficulty {
 }
 
 export interface Tile {
-  hasBomb: boolean;
+  isBomb: boolean;
   isFlagged: boolean;
-  state: TileState;
+  isVisible: boolean;
   neighbourBombs: number;
   index: Index;
 }

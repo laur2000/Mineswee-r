@@ -14,7 +14,7 @@ const MineSweeperScore = (props: MineSweeperScoreProps) => {
     if (tilesWithBombFlagged === settings.bombs) {
       onFinish(0, settings);
     }
-  }, [settings.bombs, tilesWithBombFlagged]);
+  }, [settings, tilesWithBombFlagged, onFinish]);
 
   const bombsLeft =
     settings.bombs - (tilesWithBombFlagged + tilesWithoutBombFlagged);

@@ -1,4 +1,4 @@
-import { Field, Index, Settings, Tile, TileState } from "./declarations";
+import { Field, Index, Settings, Tile } from "./declarations";
 
 export const generateBombField = (settings: Settings): Field => {
   const { width, height, bombs } = settings;
@@ -10,8 +10,8 @@ export const generateBombField = (settings: Settings): Field => {
     const row = randomNumberInRange(0, height);
     const column = randomNumberInRange(0, width);
     const tile = field[row][column];
-    if (!tile.hasBomb) {
-      tile.hasBomb = true;
+    if (!tile.isBomb) {
+      tile.isBomb = true;
       generatedBombs++;
       addNeighboursBomb(field, row, column);
     }
@@ -21,19 +21,21 @@ export const generateBombField = (settings: Settings): Field => {
 
 export const handleTileReveal = (field: Field, tile: Tile) => {
   if (tile.isFlagged) return;
-  tile.state = TileState.VISIBLE;
 
-  if (!tile.hasBomb && tile.neighbourBombs === 0) {
+  tile.isVisible = true;
+
+  if (!tile.isBomb && tile.neighbourBombs === 0) {
     const indices = getAllDirectionIndices(
       tile.index,
       field.length,
       field[0].length
     );
-    const isHidden = (tile: Tile) => tile.state === TileState.HIDDEN;
+    const indexToTile = (index: Index) => field[index.i][index.j];
+    const isHidden = (tile: Tile) => !tile.isVisible;
 
     indices
-      .map((index) => field[index.i][index.j])
-      .filter((tile) => isHidden(tile))
+      .map(indexToTile)
+      .filter(isHidden)
       .forEach((tile) => handleTileReveal(field, tile));
   }
 };
@@ -52,7 +54,7 @@ export const addNeighboursBomb = (
   indices.forEach((index) => {
     const { i, j } = index;
     const tile = field[i][j];
-    if (!tile.hasBomb) {
+    if (!tile.isBomb) {
       tile.neighbourBombs++;
     }
   });
@@ -87,7 +89,7 @@ export const calculateRemainingBombs = (field: Field) => {
       const tile = field[i][j];
 
       if (tile.isFlagged) {
-        tile.hasBomb ? tilesWithBombFlagged++ : tilesWithoutBombFlagged++;
+        tile.isBomb ? tilesWithBombFlagged++ : tilesWithoutBombFlagged++;
       }
     }
   }
@@ -110,8 +112,8 @@ export const generateEmptyField = (width: number, height: number): Field => {
     field[row] = [];
     for (let column = 0; column < width; column++) {
       field[row][column] = {
-        state: TileState.HIDDEN,
-        hasBomb: false,
+        isVisible: false,
+        isBomb: false,
         neighbourBombs: 0,
         index: { i: row, j: column },
         isFlagged: false,

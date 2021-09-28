@@ -1,22 +1,9 @@
-import { Button, Col, Row } from "antd";
-import { CSSProperties, PropsWithChildren, MouseEvent } from "react";
-import {
-  MineSweeperFieldRendererProps,
-  RenderTileProps,
-  Tile,
-  TileState,
-} from "../../utils/declarations";
+import { Row } from "antd";
+import { PropsWithChildren } from "react";
+import { MineSweeperFieldRendererProps, Tile } from "../../utils/declarations";
 import Container from "../Container";
-import { FlagOutlined } from "@ant-design/icons";
 import { handleTileReveal } from "../../utils/fn";
-
-const buttonStyle: CSSProperties = {
-  width: "32px",
-  height: "32px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
+import TileRender from "../TileRender";
 
 const MineSweeperFieldRenderer = (
   props: PropsWithChildren<MineSweeperFieldRendererProps>
@@ -37,7 +24,7 @@ const MineSweeperFieldRenderer = (
       {field.map((row, i) => (
         <Row key={"field-row-" + i}>
           {row.map((tile, j) => (
-            <RenderTile
+            <TileRender
               tile={tile}
               onTileClick={handleTileClick}
               onTileFlagged={handleTileFlagged}
@@ -48,50 +35,6 @@ const MineSweeperFieldRenderer = (
       ))}
     </Container>
   );
-};
-
-export const RenderTile = (props: RenderTileProps) => {
-  const { tile, onTileClick, onTileFlagged } = props;
-
-  const handleTileMouseDown = (e: MouseEvent) => {
-    e.preventDefault();
-
-    const isLeftClick = e.button === 0;
-    const isRightClick = e.button === 2;
-
-    if (isLeftClick) {
-      onTileClick(tile);
-    }
-    if (isRightClick) {
-      onTileFlagged(tile);
-    }
-  };
-
-  if (tile.state === TileState.HIDDEN) {
-    return (
-      <Col>
-        <Button
-          style={buttonStyle}
-          onMouseDown={handleTileMouseDown}
-          onContextMenu={(e) => e.preventDefault()}
-        >
-          {tile.isFlagged ? <FlagOutlined /> : " "}
-        </Button>
-      </Col>
-    );
-  } else {
-    return (
-      <Col>
-        <Button style={buttonStyle} disabled>
-          {tile.hasBomb
-            ? "X"
-            : tile.neighbourBombs === 0
-            ? " "
-            : tile.neighbourBombs}
-        </Button>
-      </Col>
-    );
-  }
 };
 
 export default MineSweeperFieldRenderer;

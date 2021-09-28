@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import "./MineSweeperField.css";
-import { generateBombField, handleTileReveal } from "../../utils/fn";
-import { Settings, Field, TileState } from "../../utils/declarations";
+import { generateBombField } from "../../utils/fn";
+import { Settings, Field } from "../../utils/declarations";
 
 import MineSweeperFieldRenderer from "./MineSweeperFieldRenderer";
 import MineSweeperScore from "./MineSweeperScore";
